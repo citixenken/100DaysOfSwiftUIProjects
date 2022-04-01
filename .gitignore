@@ -1,0 +1,4 @@
+###macOS ###
+*.xcodeproj/
+.DS_Store
+*.plist
