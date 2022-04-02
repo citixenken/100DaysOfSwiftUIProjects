@@ -17,7 +17,7 @@ struct ContentView: View {
     @FocusState private var amountIsFocused: Bool
     
     
-    let tipPercentages = [5, 10, 15, 20, 25, 0]
+    //let tipPercentages = [5, 10, 15, 20, 25, 0]
     
     //computed property
     var totalPerPerson: Double {
@@ -32,17 +32,18 @@ struct ContentView: View {
     }
     
     var grandTotal: Double {
-        let tipSelection = Double(tipPercentage)
-        let tipValue = (checkAmount / 100) * tipSelection
-        let grandTotal = checkAmount + tipValue
-        return grandTotal
+        return totalPerPerson * Double(numberOfPeople + 2) //compensates on the two (2) places advantage
+    }
+    
+    var currencyFormatter: FloatingPointFormatStyle<Double>.Currency {
+        return .currency(code: Locale.current.currencyCode ?? "KSh.")
     }
     
     var body: some View {
         NavigationView {
             Form {
                 Section {
-                    TextField("Amount", value: $checkAmount, format: .currency(code: Locale.current.currencyCode ?? "KSh."))
+                    TextField("Amount", value: $checkAmount, format: currencyFormatter)
                         .keyboardType(.decimalPad)
                         .focused($amountIsFocused)
                     
@@ -57,23 +58,23 @@ struct ContentView: View {
                 
                 Section {
                     Picker("Tip percentage", selection: $tipPercentage) {
-                        ForEach(tipPercentages, id: \.self) {
+                        ForEach(0..<101) {
                             Text($0, format: .percent)
                         }
                     }
                 } header: {
                     Text("How much tip do you want to leave?")
                 }
-                .pickerStyle(.segmented)
+                .pickerStyle(.automatic)
                 
                 Section {
-                    Text(grandTotal, format: .currency(code: Locale.current.currencyCode ?? "KSh."))
+                    Text(grandTotal, format: currencyFormatter)
                 } header: {
                     Text("Grand Total")
                 }
                 
                 Section {
-                    Text(totalPerPerson, format: .currency(code: Locale.current.currencyCode ?? "KSh."))
+                    Text(totalPerPerson, format: currencyFormatter)
                 } header: {
                     Text("Total Amount per Person")
                 }
