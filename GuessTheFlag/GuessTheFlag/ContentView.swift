@@ -12,6 +12,9 @@ struct ContentView: View {
     @State private var scoreTitle = ""
     @State private var score = 0
     
+    @State private var attempts = 1
+    @State private var endGame = false
+
     @State private var countries = ["Estonia", "France", "Germany", "Ireland", "Italy", "Nigeria", "Poland", "Russia", "Spain", "US", "UK"].shuffled()
     
     //correct answer -> 3 flags available for each quiz
@@ -40,7 +43,7 @@ struct ContentView: View {
                             .foregroundStyle(.secondary)
                             .font(.subheadline.weight(.heavy))
                         Text(countries[correctAnswer])
-                            //.foregroundColor(.white)
+                        //.foregroundColor(.white)
                             .font(.largeTitle.weight(.bold))
                     }
                     
@@ -48,6 +51,7 @@ struct ContentView: View {
                         Button {
                             //flag was tapped
                             flagTapped(number)
+                            
                         } label: {
                             Image(countries[number])
                                 .renderingMode(.original)
@@ -73,11 +77,20 @@ struct ContentView: View {
             }
             .padding()
         }
+        //in-game alert
         .alert(scoreTitle, isPresented: $showingScore) {
             Button("Continue", action: askQuestion)
         } message: {
-            Text("Your score is: \(score)")
+            Text("Your current score is: \(score)")
         }
+        
+        //end-game alert
+        .alert(scoreTitle, isPresented: $endGame) {
+            Button("Restart", action: reset)
+        } message: {
+            Text("Your final score is: \(score)")
+        }
+        
     }
     
     private func flagTapped(_ number: Int) {
@@ -85,16 +98,27 @@ struct ContentView: View {
             scoreTitle = "Correct!"
             score += 2
         } else {
-            scoreTitle = "Wrong!"
+            scoreTitle = "Wrong! \n\nThat is the flag of \(countries[number])"
             score -= 3
         }
-        
         showingScore = true
     }
     
     private func askQuestion() {
-        countries.shuffle()
-        correctAnswer = Int.random(in: 0...2)
+        if attempts == 8 {
+            scoreTitle = "The End!\n"
+            endGame = true
+        } else {
+            countries.shuffle()
+            correctAnswer = Int.random(in: 0...2)
+            attempts += 1
+        }
+    }
+    
+    private func reset() {
+        score = 0
+        attempts = 0
+        askQuestion()
     }
 }
 
