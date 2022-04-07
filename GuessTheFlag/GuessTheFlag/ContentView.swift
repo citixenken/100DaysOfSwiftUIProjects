@@ -86,7 +86,7 @@ struct ContentView: View {
         
         //end-game alert
         .alert(scoreTitle, isPresented: $endGame) {
-            Button("Restart", action: reset)
+            Button("Restart Game?", action: reset)
         } message: {
             Text("Your final score is: \(score)")
         }
@@ -105,7 +105,7 @@ struct ContentView: View {
     }
     
     private func askQuestion() {
-        if attempts == 8 {
+        if attempts == 10 {
             scoreTitle = "The End!\n"
             endGame = true
         } else {
