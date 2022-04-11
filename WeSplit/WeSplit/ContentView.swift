@@ -75,6 +75,7 @@ struct ContentView: View {
                 
                 Section {
                     Text(totalPerPerson, format: currencyFormatter)
+                        .foregroundColor(tipPercentage == 0 ? .red : .primary)
                 } header: {
                     Text("Total Amount per Person")
                 }
@@ -96,6 +97,8 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        ZStack { //solves the preview crashing issue
+            ContentView()
+        }
     }
 }

@@ -1,19 +1,16 @@
 //
 //  ContentView.swift
-//  ViewsAndModifiers
+//  Project3Challenge
 //
-//  Created by Ken Muyesu on 07/04/2022.
+//  Created by Ken Muyesu on 11/04/2022.
 //
 
 import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        Text("Do")
-        Text("Re")
-        Text("Mi")
-        Text("Fa")
-
+        Text("Hello, world!")
+            .padding()
     }
 }
 

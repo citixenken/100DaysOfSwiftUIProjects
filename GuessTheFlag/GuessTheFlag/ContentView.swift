@@ -40,8 +40,9 @@ struct ContentView: View {
                 VStack(spacing: 15) {
                     VStack {
                         Text("Tap the flag of...")
-                            .foregroundStyle(.secondary)
-                            .font(.subheadline.weight(.heavy))
+                            .titleStyle()
+//                            .foregroundStyle(.secondary)
+//                            .font(.subheadline.weight(.heavy))
                         Text(countries[correctAnswer])
                         //.foregroundColor(.white)
                             .font(.largeTitle.weight(.bold))
@@ -53,9 +54,7 @@ struct ContentView: View {
                             flagTapped(number)
                             
                         } label: {
-                            Image(countries[number])
-                                .renderingMode(.original)
-                                .cornerRadius(10)
+                            FlagImage(flagName: countries[number])
                             //                            .clipShape(Capsule())
                             //                            .shadow(radius: 20)
                         }
@@ -119,6 +118,32 @@ struct ContentView: View {
         score = 0
         attempts = 0
         askQuestion()
+    }
+}
+//FlagImage() View
+struct FlagImage: View {
+    var flagName: String
+    
+    var body: some View {
+        Image(flagName)
+            .renderingMode(.original)
+            .cornerRadius(10)
+    }
+}
+
+//TitleModifier
+struct TitleModifier: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .font(.largeTitle)
+            .foregroundColor(.blue)
+    }
+}
+
+//extension
+extension View {
+    func titleStyle() -> some View {
+        modifier(TitleModifier())
     }
 }
 
