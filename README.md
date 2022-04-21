@@ -8,6 +8,7 @@ My implementation of SwiftUI projects based on Paul Hudson's [100 Days Of SwiftU
 3. [Guess The Flag]
 4. [Views and Modifiers]
 5. [Project 3 Challenge]
+6. [BetterRest]
 
 [100 Days Of SwiftUI]: https://www.hackingwithswift.com/100/swiftui
 [WeSplit]: https://www.hackingwithswift.com/100/swiftui/16
@@ -15,3 +16,4 @@ My implementation of SwiftUI projects based on Paul Hudson's [100 Days Of SwiftU
 [Guess The Flag]: https://www.hackingwithswift.com/100/swiftui/20
 [Views and Modifiers]: https://www.hackingwithswift.com/100/swiftui/23
 [Project 3 Challenge]: https://www.hackingwithswift.com/guide/ios-swiftui/2/3/challenge
+[BetterRest]: https://www.hackingwithswift.com/100/swiftui/26
