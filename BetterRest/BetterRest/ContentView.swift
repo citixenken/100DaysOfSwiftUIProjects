@@ -6,23 +6,30 @@
 //
 
 import SwiftUI
+import CoreML
 
 struct ContentView: View {
     @State private var wakeUp = Date.now
     @State private var sleepAmount = 8.0
     @State private var coffeeAmount = 1
     
+    @State private var alertTitle = ""
+    @State private var alertMessage = ""
+    @State private var showingAlert = false
+    
     var body: some View {
         NavigationView {
             ZStack {
-                LinearGradient(gradient: Gradient(colors: [.yellow, .green, .mint]), startPoint: .topLeading, endPoint: .bottomLeading)
+                LinearGradient(gradient: Gradient(colors: [.yellow, .green, .red]), startPoint: .topLeading, endPoint: .bottomLeading)
                     .ignoresSafeArea()
+//                Image("undraw_sleep_analysis")
+//                    .resizable()
                 VStack {
                     //Spacer()
                     Text("When do you want to wake up?")
                         .font(.largeTitle)
                         .foregroundColor(.secondary)
-                    DatePicker("Wake up time", selection: $wakeUp, in: wakeUp..., displayedComponents: .hourAndMinute)
+                    DatePicker("Wake up time", selection: $wakeUp, displayedComponents: [.date, .hourAndMinute])
                         .labelsHidden()
                     
                     //Spacer()
@@ -42,21 +49,45 @@ struct ContentView: View {
                         .padding()
                         .foregroundColor(.white)
                         .background(.blue)
-                        .cornerRadius(16)
+                        .cornerRadius(8)
                     
                     Spacer()
                 }
-                .toolbar {
-                    Button("Calculate", action: calculateBedTime)
-                }
+//                .toolbar {
+//                    Button("Calculate", action: calculateBedTime)
+//                }
                 .navigationTitle("BetterRest")
-            .navigationBarTitleDisplayMode(.inline)
+                .navigationBarTitleDisplayMode(.inline)
+                .alert(alertTitle, isPresented: $showingAlert) {
+                    Button("OK") {}
+                } message: {
+                    Text(alertMessage)
+                }
             }
         }
     }
     
     private func calculateBedTime() {
+        do {
+            let config = MLModelConfiguration()
+            let model = try SleepCalculator(configuration: config)
+            
+            let components = Calendar.current.dateComponents([.hour, .minute], from: wakeUp)
+            let hour = (components.hour ?? 0) * 60 * 60
+            let minute = (components.minute ?? 0) * 60
+            
+            let prediction = try model.prediction(wake: Double(hour + minute), estimatedSleep: sleepAmount, coffee: Double(coffeeAmount))
+            
+            let sleepTime = wakeUp - prediction.actualSleep
+            alertTitle = "Your ideal sleep time is..."
+            alertMessage = sleepTime.formatted(date: .complete, time: .shortened)
+            
+        } catch {
+            alertTitle = "Error!"
+            alertMessage = "There was a problem calculating your bedtime."
+        }
         
+        showingAlert = true
     }
     
 }
