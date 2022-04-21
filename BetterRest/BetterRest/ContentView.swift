@@ -9,7 +9,7 @@ import SwiftUI
 import CoreML
 
 struct ContentView: View {
-    @State private var wakeUp = Date.now
+    @State private var wakeUp = defaultWakeUpTime
     @State private var sleepAmount = 8.0
     @State private var coffeeAmount = 1
     
@@ -17,54 +17,71 @@ struct ContentView: View {
     @State private var alertMessage = ""
     @State private var showingAlert = false
     
+    //default wake up time
+    static var defaultWakeUpTime: Date {
+        var components = DateComponents()
+        components.hour = 8
+        components.minute = 0
+        return Calendar.current.date(from: components) ?? Date.now
+    }
+    
     var body: some View {
         NavigationView {
-            ZStack {
-                LinearGradient(gradient: Gradient(colors: [.yellow, .green, .red]), startPoint: .topLeading, endPoint: .bottomLeading)
-                    .ignoresSafeArea()
-//                Image("undraw_sleep_analysis")
-//                    .resizable()
-                VStack {
-                    //Spacer()
+            //                            LinearGradient(gradient: Gradient(colors: [.yellow, .green, .red]), startPoint: .topLeading, endPoint: .bottomLeading)
+            //                                .ignoresSafeArea()
+            //                Image("undraw_sleep_analysis")
+            //                    .resizable()
+            
+            Form {
+                VStack(alignment: .leading, spacing: 20) {
                     Text("When do you want to wake up?")
-                        .font(.largeTitle)
+                        .font(.title2)
                         .foregroundColor(.secondary)
-                    DatePicker("Wake up time", selection: $wakeUp, displayedComponents: [.date, .hourAndMinute])
+                    DatePicker("Wake up time", selection: $wakeUp, displayedComponents: [.hourAndMinute])
                         .labelsHidden()
-                    
-                    //Spacer()
-                    
+                }
+                //Spacer()
+                
+                VStack(alignment: .leading, spacing: 20) {
                     Text("Desired amount of sleep?")
                         .font(.title2)
                     Stepper("\(sleepAmount.formatted()) hours", value: $sleepAmount, in: 4...12, step: 0.25)
                         .padding()
-                    
+                }
+                
+                VStack(alignment: .leading, spacing: 20) {
                     Text("Amount of coffeee consumed?")
                         .font(.title2)
                     Stepper(coffeeAmount == 1 ? "1 cup" : "\(coffeeAmount.formatted()) cups", value: $coffeeAmount, in: 1...50, step: 1)
                         .padding()
-                    
+                }
+                
+                VStack(alignment: .center, spacing: 20) {
                     Button("Calculate", action: calculateBedTime)
                         .font(.title)
                         .padding()
+                        //.border(Color.purple, width: 5)
                         .foregroundColor(.white)
-                        .background(.blue)
+                        .background(LinearGradient(gradient: Gradient(colors: [.blue, .mint]), startPoint: .topLeading, endPoint: .bottomTrailing))
                         .cornerRadius(8)
-                    
-                    Spacer()
+                        .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .center)
                 }
-//                .toolbar {
-//                    Button("Calculate", action: calculateBedTime)
-//                }
-                .navigationTitle("BetterRest")
-                .navigationBarTitleDisplayMode(.inline)
-                .alert(alertTitle, isPresented: $showingAlert) {
-                    Button("OK") {}
-                } message: {
-                    Text(alertMessage)
-                }
+                
+                Spacer()
             }
+            //                .toolbar {
+            //                    Button("Calculate", action: calculateBedTime)
+            //                }
+            .navigationTitle("BetterRest")
+            .navigationBarTitleDisplayMode(.inline)
+            .alert(alertTitle, isPresented: $showingAlert) {
+                Button("OK") {}
+            } message: {
+                Text(alertMessage)
+            }
+            
         }
+        
     }
     
     private func calculateBedTime() {
@@ -80,7 +97,7 @@ struct ContentView: View {
             
             let sleepTime = wakeUp - prediction.actualSleep
             alertTitle = "Your ideal sleep time is..."
-            alertMessage = sleepTime.formatted(date: .complete, time: .shortened)
+            alertMessage = sleepTime.formatted(date: .omitted, time: .shortened)
             
         } catch {
             alertTitle = "Error!"
