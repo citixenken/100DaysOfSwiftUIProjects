@@ -8,21 +8,57 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var wakeUp = Date.now
+    @State private var sleepAmount = 8.0
+    @State private var coffeeAmount = 1
     
     var body: some View {
-        //Text(Date.now, format: .dateTime.year().month().day().weekday().dayOfYear())
-        Text(Date.now.formatted(date: .long, time: .complete))
+        NavigationView {
+            ZStack {
+                LinearGradient(gradient: Gradient(colors: [.yellow, .green, .mint]), startPoint: .topLeading, endPoint: .bottomLeading)
+                    .ignoresSafeArea()
+                VStack {
+                    //Spacer()
+                    Text("When do you want to wake up?")
+                        .font(.largeTitle)
+                        .foregroundColor(.secondary)
+                    DatePicker("Wake up time", selection: $wakeUp, in: wakeUp..., displayedComponents: .hourAndMinute)
+                        .labelsHidden()
+                    
+                    //Spacer()
+                    
+                    Text("Desired amount of sleep?")
+                        .font(.title2)
+                    Stepper("\(sleepAmount.formatted()) hours", value: $sleepAmount, in: 4...12, step: 0.25)
+                        .padding()
+                    
+                    Text("Amount of coffeee consumed?")
+                        .font(.title2)
+                    Stepper(coffeeAmount == 1 ? "1 cup" : "\(coffeeAmount.formatted()) cups", value: $coffeeAmount, in: 1...50, step: 1)
+                        .padding()
+                    
+                    Button("Calculate", action: calculateBedTime)
+                        .font(.title)
+                        .padding()
+                        .foregroundColor(.white)
+                        .background(.blue)
+                        .cornerRadius(16)
+                    
+                    Spacer()
+                }
+                .toolbar {
+                    Button("Calculate", action: calculateBedTime)
+                }
+                .navigationTitle("BetterRest")
+            .navigationBarTitleDisplayMode(.inline)
+            }
+        }
     }
     
-    func exampleDate() {
-//        var components = DateComponents()
-//        components.hour = 10
-//        components.minute = 45
-//        var date = Calendar.current.date(from: components) ?? Date.now
-        let components = Calendar.current.dateComponents([.hour, .minute], from: Date.now)
-        let hour = components.hour
-        let minute = components.minute
+    private func calculateBedTime() {
+        
     }
+    
 }
 
 struct ContentView_Previews: PreviewProvider {
