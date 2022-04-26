@@ -17,12 +17,15 @@ struct ContentView: View {
     @State private var errorMessage = ""
     @State private var showingError = false
     
+    @State private var score = 0
+    
     var body: some View {
         NavigationView {
             List {
                 Section {
                     TextField("Enter your word:", text: $newWord)
                         .autocapitalization(.none)
+                        .disableAutocorrection(true)
                 }
                 
                 Section {
@@ -32,6 +35,12 @@ struct ContentView: View {
                             Text(word)
                         }
                     }
+                }
+                
+                Section {
+                    Text("\(score)")
+                } header: {
+                    Text("player's score")
                 }
             }
             .navigationTitle(rootWord)
@@ -43,12 +52,28 @@ struct ContentView: View {
             } message: {
                 Text(errorMessage)
             }
+            //restart game
+            .toolbar {
+                Button("New Word") {
+                    chooseNewWord()
+                }
+            }
         }
     }
     
     func addNewWord() {
         let answer = newWord.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)
         guard answer.count > 0 else { return }
+        
+        //disallow answers that are shorter than 3 letters or are just our start word
+        if answer.count < 3 {
+            wordError(title: "Word is too short", message: "Try a longer word")
+            return
+        }
+        if answer == rootWord {
+            wordError(title: "Word is duplicate of '\(rootWord)'", message: "Try another word.")
+            return
+        }
         
         guard isOriginal(word: answer) else {
             wordError(title: "Word used already", message: "Be more original!")
@@ -71,6 +96,15 @@ struct ContentView: View {
         }
         
         newWord = ""
+        
+        //scoring - Can be better!
+        if answer.count > 5 {
+            return score += 3
+        } else if answer.count > 3 {
+            return score += 2
+        } else {
+            return score -= 1
+        }
     }
     
     func startGame() {
@@ -113,6 +147,13 @@ struct ContentView: View {
         errorTitle = title
         errorMessage = message
         showingError = true
+    }
+    
+    func chooseNewWord() {
+        usedWords = [String]()
+        newWord = ""
+        score = 0
+        startGame()
     }
 }
 
