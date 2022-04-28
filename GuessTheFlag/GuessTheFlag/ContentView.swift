@@ -20,6 +20,8 @@ struct ContentView: View {
     //correct answer -> 3 flags available for each quiz
     @State private var correctAnswer = Int.random(in: 0...2)
     
+    @State private var rotationAmount = 0.0
+    
     var body: some View { //opaque return type
         
         ZStack {
@@ -49,15 +51,20 @@ struct ContentView: View {
                     }
                     
                     ForEach(0..<3) { number in
-                        Button {
-                            //flag was tapped
-                            flagTapped(number)
-                            
-                        } label: {
-                            FlagImage(flagName: countries[number])
-                            //                            .clipShape(Capsule())
-                            //                            .shadow(radius: 20)
-                        }
+                            Button {
+                                //flag was tapped
+                                flagTapped(number)
+                                
+                                withAnimation {
+                                    rotationAmount += 360
+                                }
+                                
+                            } label: {
+                                FlagImage(flagName: countries[number])
+                                //                            .clipShape(Capsule())
+                                //                            .shadow(radius: 20)
+                            }
+                            .rotation3DEffect(.degrees((number == correctAnswer) ? rotationAmount : 0), axis: (x: 0, y: 1, z: 0))
                     }
                 }
                 .frame(maxWidth: .infinity)
