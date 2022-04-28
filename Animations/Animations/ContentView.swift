@@ -8,9 +8,11 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var dragAmount = CGSize.zero
-    @State private var enabled = false
-    let letters = Array("Hi there, @citixenken")
+//    @State private var dragAmount = CGSize.zero
+//    @State private var enabled = false
+//    let letters = Array("Hi there, @citixenken")
+    
+    @State private var isShowingMint = false
     
     var body: some View {
 //        LinearGradient(gradient: Gradient(colors: [.red, .yellow]), startPoint: .topTrailing, endPoint: .bottomLeading)
@@ -29,24 +31,37 @@ struct ContentView: View {
         //implicit animation
         //.animation(.spring(), value: dragAmount)
         
-        HStack (spacing: 0) {
-            ForEach(0..<letters.count) { pos in
-                Text(String(letters[pos]))
-                    .padding(2)
-                    .font(.title)
-                    .background(enabled ? .red : .blue)
-                    .offset(dragAmount)
-                    .animation(.default.delay(Double(pos) / 20), value: dragAmount)
+//        HStack (spacing: 0) {
+//            ForEach(0..<letters.count) { pos in
+//                Text(String(letters[pos]))
+//                    .padding(2)
+//                    .font(.title)
+//                    .background(enabled ? .red : .blue)
+//                    .offset(dragAmount)
+//                    .animation(.default.delay(Double(pos) / 20), value: dragAmount)
+//            }
+//        }
+//        .gesture(
+//            DragGesture()
+//                .onChanged { dragAmount = $0.translation }
+//                .onEnded { _ in
+//                    dragAmount = .zero
+//                    enabled.toggle()
+//                }
+//        )
+        VStack {
+            Button(isShowingMint ? "Tapped!" : "Tap here") {
+                withAnimation {
+                    isShowingMint.toggle()
+                }
+            }
+            if isShowingMint {
+                Rectangle()
+                    .fill(.mint)
+                    .frame(width: 200, height: 200)
+                    .transition(.asymmetric(insertion: .scale, removal: .opacity))
             }
         }
-        .gesture(
-            DragGesture()
-                .onChanged { dragAmount = $0.translation }
-                .onEnded { _ in
-                    dragAmount = .zero
-                    enabled.toggle()
-                }
-        )
     }
 }
 
