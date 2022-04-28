@@ -7,6 +7,23 @@
 
 import SwiftUI
 
+struct CornerRotateModifier: ViewModifier {
+    let amount: Double
+    let anchor: UnitPoint
+    
+    func body(content: Content) -> some View {
+        content
+            .rotationEffect(.degrees(amount), anchor: anchor)
+            .clipped()
+    }
+}
+
+extension AnyTransition {
+    static var pivot: AnyTransition {
+        .modifier(active: CornerRotateModifier(amount: -90, anchor: .topLeading), identity: CornerRotateModifier(amount: 0, anchor: .topLeading))
+    }
+}
+
 struct ContentView: View {
 //    @State private var dragAmount = CGSize.zero
 //    @State private var enabled = false
@@ -49,17 +66,37 @@ struct ContentView: View {
 //                    enabled.toggle()
 //                }
 //        )
-        VStack {
-            Button(isShowingMint ? "Tapped!" : "Tap here") {
-                withAnimation {
-                    isShowingMint.toggle()
-                }
-            }
+        
+        
+//        VStack {
+//            Button(isShowingMint ? "Tapped!" : "Tap here") {
+//                withAnimation {
+//                    isShowingMint.toggle()
+//                }
+//            }
+//            if isShowingMint {
+//                Rectangle()
+//                    .fill(.mint)
+//                    .frame(width: 200, height: 200)
+//                    .transition(.asymmetric(insertion: .scale, removal: .opacity))
+//            }
+//        }
+        
+        ZStack {
+            Rectangle()
+                .fill(.orange)
+                .frame(width: 300, height: 300)
+            
             if isShowingMint {
                 Rectangle()
                     .fill(.mint)
-                    .frame(width: 200, height: 200)
-                    .transition(.asymmetric(insertion: .scale, removal: .opacity))
+                    .frame(width: 300, height: 300)
+                    .transition(.pivot)
+            }
+        }
+        .onTapGesture {
+            withAnimation {
+                isShowingMint.toggle()
             }
         }
     }
