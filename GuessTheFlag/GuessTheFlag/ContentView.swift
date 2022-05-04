@@ -64,8 +64,9 @@ struct ContentView: View {
                                 //                            .clipShape(Capsule())
                                 //                            .shadow(radius: 20)
                             }
-                            .rotation3DEffect(.degrees((number == correctAnswer) ? rotationAmount : 0), axis: (x: 0, y: 1, z: 0))
-                    }
+                            .rotation3DEffect(.degrees((number == correctAnswer) ? rotationAmount : 0.0), axis: (x: 0, y: 1, z: 0))
+                            .opacity((number != correctAnswer) ? 0.25 : 1)
+                        }
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 20)
@@ -100,6 +101,7 @@ struct ContentView: View {
     }
     
     private func flagTapped(_ number: Int) {
+        opacityAmount = 0.25
         if number == correctAnswer {
             scoreTitle = "Correct!"
             score += 2
@@ -119,6 +121,7 @@ struct ContentView: View {
             correctAnswer = Int.random(in: 0...2)
             attempts += 1
         }
+        
     }
     
     private func reset() {
