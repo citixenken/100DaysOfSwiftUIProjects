@@ -23,6 +23,7 @@ struct AddView: View {
             Form {
                 Section {
                     TextField("Input name", text: $name)
+                        .autocapitalization(UITextAutocapitalizationType.words)
                 } header: {
                     Text("Name")
                 }
@@ -47,7 +48,11 @@ struct AddView: View {
             .navigationTitle("Add New Expense")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                Button("Done") {
+                Button("Save") {
+                    let expense = ExpenseItem(name: name, type: type, amount: amount)
+                    expenses.items.append(expense)
+                    
+                    //after saving
                     dismiss()
                 }
             }

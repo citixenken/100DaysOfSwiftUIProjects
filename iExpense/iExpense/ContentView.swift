@@ -18,11 +18,18 @@ struct ContentView: View {
         NavigationView {
             List {
                 ForEach(expenses.items) { item in
-                    VStack {
-                        Text(item.name)
-                            .foregroundColor(.primary)
-                        Text(item.type)
-                            .foregroundColor(.secondary)
+                    HStack {
+                        VStack (alignment: .leading){
+                            Text(item.name)
+                                .font(.headline)
+                                .foregroundColor(.primary)
+                            Text(item.type)
+                                .foregroundColor(.secondary)
+                        }
+                        Spacer()
+                        
+                        Text(item.amount, format: .currency(code: "kes"))
+                            .foregroundColor(.red)
                     }
                 }
                 .onDelete(perform: deleteItem)
@@ -31,8 +38,6 @@ struct ContentView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 Button {
-//                    let expense = ExpenseItem(name: "tyres", type: "vehicular", amount: 20.00)
-//                    expenses.items.append(expense)
                     showingAddView = true
                     
                 } label: {

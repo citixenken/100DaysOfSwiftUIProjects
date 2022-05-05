@@ -10,5 +10,28 @@
 import Foundation
 
 class Expenses: ObservableObject {
-    @Published var items = [ExpenseItem]()
+    @Published var items = [ExpenseItem]() {
+        didSet {
+            let encoder = JSONEncoder()
+            
+            if let encoded = try? encoder.encode(items) {
+                //save - encoding
+                UserDefaults.standard.set(encoded, forKey: "Items")
+            }
+        }
+    }
+    
+    //read data from UserDefaults - Decoding
+    init() {
+        let decoder = JSONDecoder()
+        
+        if let savedItems = UserDefaults.standard.data(forKey: "Items") {
+            if let decodedItems = try? decoder.decode([ExpenseItem].self, from: savedItems) {
+                items = decodedItems
+                return
+            }
+        }
+        //else
+        items = []
+    }
 }
