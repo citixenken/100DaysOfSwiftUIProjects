@@ -12,6 +12,8 @@ struct ContentView: View {
     //instance of expenses class
     @StateObject var expenses = Expenses()
     
+    @State private var showingAddView = false
+    
     var body: some View {
         NavigationView {
             List {
@@ -29,11 +31,16 @@ struct ContentView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 Button {
-                    let expense = ExpenseItem(name: "tyres", type: "vehicular", amount: 20.00)
-                    expenses.items.append(expense)
+//                    let expense = ExpenseItem(name: "tyres", type: "vehicular", amount: 20.00)
+//                    expenses.items.append(expense)
+                    showingAddView = true
+                    
                 } label: {
                     Image(systemName: "plus")
                 }
+            }
+            .sheet(isPresented: $showingAddView) {
+                AddView(expenses: expenses)
             }
         }
     }
