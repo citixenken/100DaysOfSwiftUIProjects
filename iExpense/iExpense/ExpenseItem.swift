@@ -7,9 +7,13 @@
 //  MARK: - Our Model setup - Represents a single item of expense
 import Foundation
 
-struct ExpenseItem: Identifiable, Codable {
+struct ExpenseItem: Identifiable, Codable, Equatable {
     var id = UUID()
     let name: String
-    let type: String
+    let type: Types
     let amount: Double
+    
+    enum Types: String, CaseIterable, Codable {
+        case personal, business
+    }
 }

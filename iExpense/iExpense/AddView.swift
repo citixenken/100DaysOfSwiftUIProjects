@@ -13,27 +13,28 @@ struct AddView: View {
     @ObservedObject var expenses: Expenses
     
     @State private var name = ""
-    @State private var type = "Business"
+    @State private var type = ExpenseItem.Types.business
     @State private var amount = 0.0
     
-    let types = ["Personal", "Business"]
+    //let types = ["Personal", "Business"]
     
     var body: some View {
         NavigationView {
             Form {
                 Section {
-                    TextField("Input name", text: $name)
-                        .autocapitalization(UITextAutocapitalizationType.words)
+                    TextField("Expense", text: $name)
+                        .autocapitalization(UITextAutocapitalizationType.sentences)
                 } header: {
                     Text("Name")
                 }
                 
                 Section {
                     Picker("Type", selection: $type) {
-                        ForEach(types, id: \.self) {
-                            Text($0)
+                        ForEach(ExpenseItem.Types.allCases, id: \.self) {
+                            Text($0.rawValue.capitalized)
                         }
                     }
+                    .pickerStyle(.segmented)
                 } header: {
                     Text("Type")
                 }
