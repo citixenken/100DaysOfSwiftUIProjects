@@ -15,44 +15,28 @@ struct ContentView: View {
     
     let columns = [GridItem(.adaptive(minimum: 150))]
     
+    @State private var showingGridOrList = true
+    
     var body: some View {
         NavigationView {
-            ScrollView {
-                LazyVGrid(columns: columns) {
-                    ForEach(missions) { mission in
-                        NavigationLink {
-//                            Text("\(mission.displayName) Detail View")
-                            MissionView(mission: mission, astronauts: astronauts)
-                        } label: {
-                            VStack {
-                                Image(mission.image)
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 100, height: 100)
-                                    .padding()
-                                VStack {
-                                    Text(mission.displayName)
-                                        .font(.headline)
-                                        .foregroundColor(.orange)
-                                    Text(mission.formattedLaunchDate)
-                                        .font(.caption)
-                                        .foregroundColor(.white.opacity(0.6))
-                                }
-                                .padding(.vertical)
-                                .frame(maxWidth: .infinity)
-                                .background(.lightBackground)
-                            }
-                            .clipShape(RoundedRectangle(cornerRadius: 16))
-                            .overlay(RoundedRectangle(cornerRadius: 16).stroke(.lightBackground))
-                        }
-                    }
+            Group {
+                if showingGridOrList {
+                    GridLayoutView()
+                } else {
+                    ListLayoutView()
                 }
-                .padding([.horizontal, .bottom])
             }
             .navigationTitle("Moonshot")
             .navigationBarTitleDisplayMode(.inline)
             .background(.darkBackground)
             .preferredColorScheme(.dark) //locks display to dark mode
+            
+            .toolbar {
+                Button("Toggle View") {
+                    showingGridOrList.toggle()
+                }
+                .buttonStyle(.plain)
+            }
         }
     }
 }

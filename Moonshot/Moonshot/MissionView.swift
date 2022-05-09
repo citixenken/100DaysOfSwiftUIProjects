@@ -63,6 +63,8 @@ struct MissionView: View {
                     
 //                    Divider ()
 
+                    // MARK: - Pending implementation -> Push to a new SwiftUI view
+                    
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack {
                             ForEach(crew, id: \.role) { crewMember in
