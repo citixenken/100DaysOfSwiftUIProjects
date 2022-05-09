@@ -10,9 +10,16 @@ import SwiftUI
 struct MissionView: View {
     let mission: Mission
     
+    struct CrewMember {
+        let role: String
+        let astronaut: Astronaut
+    }
+    
+    let crew: [CrewMember]
+    
     var body: some View {
         GeometryReader { geo in
-            ScrollView {
+            ScrollView(showsIndicators: false) {
                 VStack {
                     Image(mission.image)
                         .resizable()
@@ -23,13 +30,61 @@ struct MissionView: View {
                     
                         .padding(.top)
                     
+//                    Divider ()
+                    
                     VStack(alignment: .leading) {
+                        Rectangle()
+                            .frame(height: 1)
+                            .padding(.vertical)
+                            .foregroundColor(.lightBackground)
+                        
                         Text("Mission Highlights")
                             .font(.title.bold())
                             .padding(.bottom, 5)
+                        
                         Text(mission.description)
+                        
+                        Rectangle()
+                            .frame(height: 1)
+                            .padding(.vertical)
+                            .foregroundColor(.lightBackground)
+                        
+                        Text("Crew")
+                            .font(.title.bold())
+                            .padding(.bottom, 5)
                     }
                     .padding(.horizontal)
+                    
+//                    Divider ()
+
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack {
+                            ForEach(crew, id: \.role) { crewMember in
+                                NavigationLink {
+                                    Text("\(crewMember.astronaut.name) details")
+                                } label: {
+                                    HStack {
+                                        Image(crewMember.astronaut.id)
+                                            .resizable()
+                                            .frame(width: 104, height: 72)
+                                            .clipShape(Circle())
+                                            .overlay(
+                                            Circle()
+                                                .strokeBorder(.white, lineWidth: 2))
+                                    }
+                                    VStack(alignment: .leading) {
+                                        Text(crewMember.astronaut.name)
+                                            .foregroundColor(.white)
+                                            .font(.headline)
+                                        Text(crewMember.role)
+                                            .foregroundColor(crewMember.role == "Commander" ? .green : .secondary)
+
+                                    }
+                                }
+                            }
+                        }
+                        .padding(.horizontal)
+                    }
                 }
                 .padding(.bottom)
             }
@@ -38,14 +93,28 @@ struct MissionView: View {
             .background(.darkBackground)
         }
     }
+    
+    init(mission: Mission, astronauts: [String: Astronaut]) {
+        self.mission = mission
+        
+        self.crew = mission.crew.map { member in
+            if let astronaut = astronauts[member.name] {
+                return CrewMember(role: member.role, astronaut: astronaut)
+            } else {
+                fatalError("Missing \(member.name)")
+            }
+        }
+    }
 }
 
 struct MissionView_Previews: PreviewProvider {
     
     static let missions: [Mission] = Bundle.main.decode("missions.json")
+    static let astronauts: [String: Astronaut] = Bundle.main.decode("astronauts.json")
+
     
     static var previews: some View {
-        MissionView(mission: missions[4])
+        MissionView(mission: missions[4], astronauts: astronauts)
             .preferredColorScheme(.dark)
     }
 }
