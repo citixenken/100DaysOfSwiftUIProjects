@@ -51,6 +51,8 @@ struct ContentView: View {
                 } header: {
                     Text("Delivery details")
                 }
+                
+                
             }
             .navigationTitle("Cupcake Corner")
             .navigationBarTitleDisplayMode(.inline)
