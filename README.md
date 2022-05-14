@@ -14,6 +14,7 @@ My implementation of SwiftUI projects based on Paul Hudson's [100 Days Of SwiftU
 9. [Moonshot]
 10. [Drawing]
 11. [CupcakeCorner]
+12. [Bookworm]
 
 [100 Days Of SwiftUI]: https://www.hackingwithswift.com/100/swiftui
 [WeSplit]: https://www.hackingwithswift.com/100/swiftui/16
@@ -27,3 +28,4 @@ My implementation of SwiftUI projects based on Paul Hudson's [100 Days Of SwiftU
 [Moonshot]: https://www.hackingwithswift.com/100/swiftui/39
 [Drawing]: https://www.hackingwithswift.com/100/swiftui/43
 [CupcakeCorner]: https://www.hackingwithswift.com/100/swiftui/49
+[Bookworm]: https://www.hackingwithswift.com/100/swiftui/53
