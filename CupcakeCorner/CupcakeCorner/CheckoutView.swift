@@ -11,6 +11,7 @@ struct CheckoutView: View {
     @ObservedObject var order: Order
     
     @State private var confirmationMessage = ""
+    @State private var confirmationTitle = ""
     @State private var showingConfirmation = false
     
     var body: some View {
@@ -43,7 +44,7 @@ struct CheckoutView: View {
         }
         .navigationTitle("Checkout")
         .navigationBarTitleDisplayMode(.inline)
-        .alert("Thank you!", isPresented: $showingConfirmation){
+        .alert(confirmationTitle, isPresented: $showingConfirmation){
             Button("OK"){
                 
             }
@@ -69,11 +70,16 @@ struct CheckoutView: View {
             
             //handle the result
             let decodedOrder = try JSONDecoder().decode(Order.self, from: data)
+            confirmationTitle = "Thank you!"
             confirmationMessage = "Your order for \(decodedOrder.quantity)x \(Order.types[decodedOrder.type].lowercased()) cupcakes is on its way!"
             showingConfirmation = true
             
         } catch {
             print("Checkout failed!")
+            //error handling
+            confirmationTitle = "Sorry!"
+            confirmationMessage = "Your order didn't go through. Check your network connectivity and retry."
+            showingConfirmation = true
         }
     }
 }
