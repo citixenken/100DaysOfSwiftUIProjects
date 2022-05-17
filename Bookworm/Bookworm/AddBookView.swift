@@ -24,7 +24,9 @@ struct AddBookView: View {
             Form {
                 Section {
                     TextField("Name of book", text: $title)
+                        .disableAutocorrection(true)
                     TextField("Author's name", text: $author)
+                        .disableAutocorrection(true)
                     
                     Picker("Genre", selection: $genre) {
                         ForEach(genres, id: \.self) {
@@ -37,6 +39,7 @@ struct AddBookView: View {
                 
                 Section {
                     TextEditor(text: $review)
+                        .disableAutocorrection(true)
                     RatingView(rating: $rating)
                     
 //                    Picker("Rating", selection: $rating) {
