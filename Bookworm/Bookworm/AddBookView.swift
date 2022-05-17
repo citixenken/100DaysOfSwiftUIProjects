@@ -69,10 +69,19 @@ struct AddBookView: View {
                         dismiss()
                     }
                 }
+                .disabled(hasValidBookInfo == false)
             }
             .navigationTitle("Add Book")
             .navigationBarTitleDisplayMode(.inline)
         }
+    }
+    
+    //form validation
+    var hasValidBookInfo: Bool {
+        if (title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty) || (author.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty) || (genre.isEmpty) || (review.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty) {
+            return false
+        }
+        return true
     }
 }
 
