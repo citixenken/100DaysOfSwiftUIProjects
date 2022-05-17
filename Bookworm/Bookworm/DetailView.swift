@@ -13,7 +13,7 @@ struct DetailView: View {
     @Environment(\.managedObjectContext) var moc
     @Environment(\.dismiss) var dismiss
     
-    @State private var showingDeleteAlert = false 
+    @State private var showingDeleteAlert = false
     
     var body: some View {
         ScrollView {
@@ -34,6 +34,10 @@ struct DetailView: View {
             
             Text(book.author ?? "Unknown author")
                 .font(.title)
+                .foregroundColor(.secondary)
+            
+            Text("Added on: \(book.date?.formatted(date: .abbreviated, time: .shortened) ?? "Cannot define exact date added")")
+                .font(.caption)
                 .foregroundColor(.secondary)
             
             Text(book.review ?? "No review")
