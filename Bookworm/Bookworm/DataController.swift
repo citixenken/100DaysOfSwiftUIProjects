@@ -9,8 +9,8 @@ import CoreData
 import Foundation
 
 class DataController: ObservableObject {
-    //use our Bookworm datamodel
-    let container = NSPersistentContainer(name: "Bookworm")
+    //use our CoreDataProject datamodel
+    let container = NSPersistentContainer(name: "CoreDataProject")
     
     init() {
         container.loadPersistentStores { description, error in
