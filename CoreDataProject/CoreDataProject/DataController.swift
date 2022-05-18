@@ -1,16 +1,17 @@
 //
 //  DataController.swift
-//  Bookworm
+//  CoreDataProject
 //
-//  Created by Ken Muyesu on 16/05/2022.
+//  Created by Ken Muyesu on 18/05/2022.
 //
 
 import CoreData
 import Foundation
 
 class DataController: ObservableObject {
-    //use our Bookworm datamodel
-    let container = NSPersistentContainer(name: "Bookworm")
+    //using our CoreDataProject datamodel
+    
+    let container = NSPersistentContainer(name: "CoreDataProject")
     
     init() {
         container.loadPersistentStores { description, error in
