@@ -10,34 +10,40 @@ import SwiftUI
 
 struct ContentView: View {
     @Environment(\.managedObjectContext) var moc
-    @FetchRequest(sortDescriptors: [], predicate: NSPredicate(format: "universe IN %@", ["Star Wars", "Aliens", "Firefly"])) var ships: FetchedResults<Ship>
+    @State private var aliasNameFilter = "K"
     
     var body: some View {
         VStack {
-            List(ships, id: \.self) { ship in
-                Text(ship.name ?? "Unknown ship")
+            //list of matching singers
+            FilteredList(filter: aliasNameFilter)
+            
+            Button("Add Singers") {
+                let kendrick = Singer(context: moc)
+                kendrick.firstName = "Kendrick"
+                kendrick.lastName = "Lamar"
+                kendrick.aliasName = "Kung-Fu Kenny"
+                
+                let postmalone = Singer(context: moc)
+                postmalone.firstName = "Austin"
+                postmalone.lastName = "Post"
+                postmalone.aliasName = "Post Malone"
+                
+                let beyonce = Singer(context: moc)
+                beyonce.firstName = "Beyonce"
+                beyonce.lastName = "Knowles"
+                beyonce.aliasName = "Beyonce"
+                
+                try? moc.save()
+
             }
             
-            Button("Add Vessel") {
-                let shipOne = Ship(context: moc)
-                shipOne.name = "Enterprise"
-                shipOne.universe = "Star Trek"
-
-                let shipTwo = Ship(context: moc)
-                shipTwo.name = "Defiant"
-                shipTwo.universe = "Star Trek"
-
-                let shipThree = Ship(context: moc)
-                shipThree.name = "Millenium Falcon"
-                shipThree.universe = "Star Wars"
-
-                let shipFour = Ship(context: moc)
-                shipFour.name = "Executor"
-                shipFour.universe = "Star Wars"
-
-                try? moc.save()
+            Button("Show P") {
+                aliasNameFilter = "P"
             }
-
+            
+            Button("Show B") {
+                aliasNameFilter = "B"
+            }
         }
     }
 }
