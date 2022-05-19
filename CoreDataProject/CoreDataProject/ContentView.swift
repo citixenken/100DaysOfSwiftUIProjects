@@ -15,7 +15,9 @@ struct ContentView: View {
     var body: some View {
         VStack {
             //list of matching singers
-            FilteredList(filter: aliasNameFilter)
+            FilteredList(filterKey: "aliasName", filterValue: aliasNameFilter) { (singer: Singer) in
+                Text("\(singer.wrappedFirstName) \"\(singer.wrappedAliasName)\" \(singer.wrappedLastName)")
+            }
             
             Button("Add Singers") {
                 let kendrick = Singer(context: moc)
