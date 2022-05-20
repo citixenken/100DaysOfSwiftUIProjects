@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreData
+import SwiftUI
 
 
 extension Singer {
@@ -31,6 +32,7 @@ extension Singer {
     var wrappedFirstName: String {
         firstName ?? "Unknown"
     }
+    
 
 }
 
