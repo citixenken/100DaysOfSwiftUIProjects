@@ -19,13 +19,28 @@ struct ContentView: View {
                 .resizable()
                 .scaledToFit()
             
-            Button("Select image") {
+            Button("Select Image") {
                 showingImagePicker = true
             }
             .padding()
             .background(.blue)
             .foregroundColor(.white)
             .cornerRadius(16)
+            
+            
+            //Save selected image to photo album
+            Button("Save Image") {
+                guard let inputImage = inputImage else {
+                    return
+                }
+                let imageSaver = ImageSaver()
+                imageSaver.writeToPhotoAlbum(image: inputImage)
+            }
+            .padding()
+            .background(.blue)
+            .foregroundColor(.white)
+            .cornerRadius(16)
+            
         }
         .sheet(isPresented: $showingImagePicker) {
             ImagePicker(image: $inputImage)
@@ -39,7 +54,6 @@ struct ContentView: View {
         }
         
         image = Image(uiImage: inputImage)
-
     }
 }
 
