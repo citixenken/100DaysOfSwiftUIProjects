@@ -5,55 +5,54 @@
 //  Created by Ken Muyesu on 20/05/2022.
 //
 
-
 import SwiftUI
 
 struct ContentView: View {
     @State private var image: Image?
-    @State private var inputImage: UIImage?
-    @State private var showingImagePicker = false
+    @State private var filterIntensity = 0.5
     
     var body: some View {
-        VStack {
-            image?
-                .resizable()
-                .scaledToFit()
-            
-            Button("Select Image") {
-                showingImagePicker = true
-            }
-            .padding()
-            .background(.blue)
-            .foregroundColor(.white)
-            .cornerRadius(16)
-            
-            
-            //Save selected image to photo album
-            Button("Save Image") {
-                guard let inputImage = inputImage else {
-                    return
+        NavigationView {
+            VStack {
+                ZStack {
+                    Rectangle()
+                        .fill(.secondary)
+                    
+                    Text("Tap to select a picture")
+                        .foregroundColor(.white)
+                        .font(.title2)
+                    
+                    image?
+                        .resizable()
+                        .scaledToFit()
                 }
-                let imageSaver = ImageSaver()
-                imageSaver.writeToPhotoAlbum(image: inputImage)
+                .onTapGesture {
+                    //select an image
+                }
+                
+                HStack {
+                    Text("Intensity")
+                    
+                    Slider(value: $filterIntensity)
+                }
+                .padding()
+                
+                HStack {
+                    Button("Change Filter") {
+                        //code
+                    }
+                    Spacer()
+                    Button("Save", action: save)
+                }
             }
-            .padding()
-            .background(.blue)
-            .foregroundColor(.white)
-            .cornerRadius(16)
-            
+            .padding([.horizontal, .bottom])
+            .navigationTitle("Instafilter")
+            .navigationBarTitleDisplayMode(.inline)
         }
-        .sheet(isPresented: $showingImagePicker) {
-            ImagePicker(image: $inputImage)
-        }
-        .onChange(of: inputImage) { _ in loadImage() }
     }
     
-    func loadImage() {
-        guard let inputImage = inputImage else {
-            return
-        }
+    func save() {
         
-        image = Image(uiImage: inputImage)
     }
 }
 
